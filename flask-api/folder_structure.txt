@@ -1,0 +1,17 @@
+flask-api/
+├─ app.py
+├─ config.py
+├─ models.py
+├─ extensions.py
+├─ routes/
+│  ├─ __init__.py
+│  ├─ auth.py
+│  └─ items.py
+├─ migrations/        # created by Flask-Migrate (folder placeholder)
+├─ tests/
+│  └─ test_api.py
+├─ requirements.txt
+├─ Dockerfile
+├─ docker-compose.yml
+├─ .env.example
+└─ README.md
