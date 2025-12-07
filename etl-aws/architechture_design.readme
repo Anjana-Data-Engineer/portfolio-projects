@@ -1,0 +1,52 @@
+           +--------------------+
+           |   Client Uploads   |
+           | CSV/JSON to S3     |
+           +---------+----------+
+                     |
+                     v   (S3 Event Trigger)
+          +----------+----------+
+          |     AWS Lambda      |
+          | - Reads raw data    |
+          | - Cleans & transforms|
+          | - Validates schema   |
+          +----------+----------+
+                     |
+                     v
+          +----------+----------+
+          | Amazon RDS (Postgres)|
+          |  - Stores processed  |
+          |    structured data   |
+          +----------------------+
+
+⭐ 3. Key Features
+
+🔹 Event-driven pipeline using S3 triggers
+🔹 Automatic schema validation and data cleaning
+🔹 Serverless execution with AWS Lambda
+🔹 Optimized batch insert into PostgreSQL
+🔹 Error handling & CloudWatch-based monitoring
+🔹 Modular transform functions for reusability
+🔹 Works for CSV and JSON formats
+
+🧰 4. Tech Stack
+
+Python 3.10+
+AWS Lambda
+Amazon S3
+Amazon RDS (PostgreSQL)
+SQLAlchemy
+boto3 (AWS Python SDK)
+pandas
+
+📂 5. Folder Structure
+
+etl-aws/
+├── lambda_function.py        # Main ETL Lambda
+├── transform.py              # Custom transformation utilities
+├── requirements.txt          # Lambda dependencies
+├── sample_data/
+│   └── sample.csv            # Example dataset for testing
+├── README.md                 # Project documentation
+└── local_etl_test.py         # Script to run ETL locally for dev testing
+
+
