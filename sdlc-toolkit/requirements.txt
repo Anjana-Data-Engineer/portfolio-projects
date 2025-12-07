@@ -1,0 +1,6 @@
+PyGithub>=1.58
+jira>=3.3.0
+flake8>=6.0
+coverage>=7.2
+pytest>=7.4
+python-dotenv>=1.0
