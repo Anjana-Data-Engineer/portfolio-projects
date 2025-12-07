@@ -24,3 +24,18 @@ def lambda_handler(event, context):
         engine = create_engine(RDS_URL)
         df.to_sql(TARGET_TABLE, con=engine, if_exists="append", index=False)
     return {"status": "ok"}
+
+#3️ Lambda processes data
+
+# Reads the file from S3
+#Parses data using pandas
+#Cleans/validates (duplicates removal, null handling)
+#Transforms data
+#Inserts into PostgreSQL using SQLAlchemy
+
+#4️ Logs and metrics captured
+
+#CloudWatch captures:
+#Processing time
+#Number of rows loaded
+#Errors / exceptions
