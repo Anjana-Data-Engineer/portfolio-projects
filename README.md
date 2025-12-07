@@ -11,3 +11,32 @@ Project	Description	Tech Stack
 4. Real-Time Log Monitoring System	Streaming pipeline to process logs in real-time and display live alerts/dashboard.	Python, Redis/Kafka, Flask, WebSockets
 5. SDLC Automation & Validation Toolkit	CI-integrated automation suite validating linting, test coverage, docs, config, and JIRA linkage before merge.	Python, GitHub Actions, Flake8, Coverage
 6. Personal Finance Analytics Dashboard	Upload CSV → clean → analyze → visualize spending trends and insights interactively.
+
+🧱 Repository Structure
+
+portfolio-projects/
+├─ etl-aws/
+│  ├─ lambda_function.py
+│  ├─ requirements.txt
+│  └─ README.md
+├─ flask-api/
+│  ├─ app.py
+│  ├─ models.py
+│  ├─ Dockerfile
+│  └─ requirements.txt
+├─ data-quality/
+│  ├─ dq_engine.py
+│  └─ rules/
+│     └─ sample_rules.yaml
+├─ log-monitor/
+│  ├─ producer.py
+│  ├─ consumer.py
+│  ├─ dashboard/
+│  └─ requirements.txt
+├─ sdlc-toolkit/
+│  ├─ checks/
+│  ├─ run_all.py
+│  └─ requirements.txt
+└─ finance-dashboard/
+   ├─ app.py
+   └─ requirements.txt
