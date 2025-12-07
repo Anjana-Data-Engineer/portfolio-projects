@@ -1,0 +1,12 @@
+checks:
+  - name: id_not_null
+    type: not_null
+    column: id
+  - name: id_unique
+    type: unique
+    column: id
+  - name: amount_range
+    type: range
+    column: amount
+    min: 0
+    max: 100000
