@@ -1,0 +1,4 @@
+{
+  "bucket": "your-bucket-name",
+  "key": "path/to/file.csv"
+}
