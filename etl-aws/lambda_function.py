@@ -1,41 +1,37 @@
+# lambda_function.py
 import os
 import io
 import json
 import boto3
 import pandas as pd
 from sqlalchemy import create_engine
+from transform import transform_df
 
 s3 = boto3.client("s3")
-
-# env vars (set in Lambda)
-RDS_URL = os.environ.get("RDS_URL")  # postgresql://user:pass@host:port/db
+RDS_URL = os.environ.get("RDS_URL")  # e.g. postgresql://user:pass@host:5432/db
 TARGET_TABLE = os.environ.get("TARGET_TABLE", "ingested_data")
+CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE", "500"))
+
+def read_s3_csv(bucket, key):
+    resp = s3.get_object(Bucket=bucket, Key=key)
+    data = resp["Body"].read()
+    return pd.read_csv(io.BytesIO(data))
+
+def to_postgres(df: pd.DataFrame):
+    engine = create_engine(RDS_URL)
+    df.to_sql(TARGET_TABLE, engine, if_exists="append", index=False, method="multi", chunksize=CHUNK_SIZE)
 
 def lambda_handler(event, context):
-    # Event from S3 put
+    results = []
     for rec in event.get("Records", []):
         bucket = rec["s3"]["bucket"]["name"]
         key = rec["s3"]["object"]["key"]
-        resp = s3.get_object(Bucket=bucket, Key=key)
-        content = resp["Body"].read()
-        # assume csv for demo
-        df = pd.read_csv(io.BytesIO(content))
-        df = transform_df(df)
-        engine = create_engine(RDS_URL)
-        df.to_sql(TARGET_TABLE, con=engine, if_exists="append", index=False)
-    return {"status": "ok"}
-
-#3️ Lambda processes data
-
-# Reads the file from S3
-#Parses data using pandas
-#Cleans/validates (duplicates removal, null handling)
-#Transforms data
-#Inserts into PostgreSQL using SQLAlchemy
-
-#4️ Logs and metrics captured
-
-#CloudWatch captures:
-#Processing time
-#Number of rows loaded
-#Errors / exceptions
+        try:
+            df = read_s3_csv(bucket, key)
+            df = transform_df(df)
+            if not df.empty:
+                to_postgres(df)
+            results.append({"key": key, "status": "ok", "rows": len(df)})
+        except Exception as e:
+            results.append({"key": key, "status": "error", "error": str(e)})
+    return {"results": results}
